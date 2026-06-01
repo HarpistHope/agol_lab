@@ -96,6 +96,7 @@
             [140.7250, 41.7820]// closing the polygon with the starting point
           ]]
         };
+
         // define style for polygon graphic
         const simplePolySymbol = {
           type: "simple-fill",
@@ -116,6 +117,7 @@
             [140.7042, 41.7589] 
           ]
         }
+        
         // style polyline graphic 
         const simpleLineSymbol = {
           type: "simple-line",
@@ -175,7 +177,7 @@
         graphicsLayer.add(pointGraphic);
 
         // Challenge 3: add feature layer, modify popup content
-        // Define a pop-up for usaeduLayer
+        // Define a pop-up for tourist attractions layer
         const popupTouristAttractions = {
           "title": "{name}", // in Japanese (not every feature has an English name)
           "content": "<b>English Name:</b> {name_en}<br><b>Type:</b> {tourism}<br><b>Hours:</b> {opening_hours}<br><a href='{website}' target='_blank'>Visit Website</a>"
