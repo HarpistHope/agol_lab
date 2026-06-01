@@ -49,9 +49,10 @@
         // create map view, set center and scale, set container property to viewDiv
         const view = new MapView({
           map: map,
-          center: [140.75, 41.78], // Longitude, latitude - centered on Hakodate, Japan
+          // center: [140.75, 41.78], // Longitude, latitude - centered on Hakodate, Japan
+          center: [140.715, 41.765],
           container: "viewDiv", // Div element
-          scale: 70000 // scale level
+          scale: 20000
         });
 
         // add graphicsLayer constructor
@@ -77,14 +78,100 @@
           }  
         };
 
+        // Challenge 2: add polygon and polyline graphics to the map
+        // first, polygon geometry to represent Hakodate Station
+        const polygon = {
+          type: "polygon",
+          rings: [[
+            // [140.7010, 41.7620], // approx long lat of Hakodate Station
+            // [140.7030, 41.7620],
+            // [140.7030, 41.7600],
+            // [140.7010, 41.7600],
+            // [140.7010, 41.7620] // closing the polygon with the starting point
+            [140.7250, 41.7740], 
+            [140.7280, 41.7740],
+            [140.7280, 41.7720],
+            [140.7250, 41.7720],
+            [140.7250, 41.7740] // closing the polygon with the starting point
+          ]]
+        };
+        // define style for polygon graphic
+        const simplePolySymbol = {
+          type: "simple-fill",
+          color: [255, 255, 255, 0.3], // added 30% transparency so I can still see the basemap underneath
+          outline: {
+            color: [32, 144, 184],
+            width: 1.5
+          } 
+        }
+
+        // second, polyline geometry to represent the route from Hakodate Station to Mt. Hakodate
+        const polyline = {
+          type: "polyline",
+          paths: [
+            [140.726, 41.773], // Start: Hakodate Station
+            [140.720, 41.768], // Middle: Through the Red Brick Warehouse district
+            [140.715, 41.763], // Middle: Toward Jujigai
+            [140.704, 41.759]  // End: Mt. Hakodate Ropeway
+          ]
+        }
+        // style polyline graphic 
+        const simpleLineSymbol = {
+          type: "simple-line",
+          color: [32, 144, 184],
+          width: 2
+        }
+
+        // create popup template and define attributes for my point, polygon, and polyline
+        const popupTemplate = {
+            title: "{Name}",
+            content: "{Description}"
+        }
+        const pointattributes = {
+            Name: "Mt. Hakodate",
+            Description: "A famous landmark in Hakodate, Japan. It is known for its stunning night view of the surrounding bay and city."
+        }
+        const plygnattributes = {
+            Name: "Hakodate Station",
+            Description: "The main train station and transport hub in Hakodate."
+        }
+        const lineattributes = {
+            Name: "Route from Hakodate Station to Mt. Hakodate Ropeway",
+            Description: "A popular walking route that takes about 25-30 minutes."
+        }
+
         // create pointGraphic by adding geometry and symbol together
         const pointGraphic = new Graphic({  
           geometry: point,  
-          symbol: simpleMarkerSymbol
+          symbol: simpleMarkerSymbol,
+
+          // add popup properties
+          attributes: pointattributes,
+          popupTemplate: popupTemplate
+
         });
+
+        //create polygonGraphic, add geometry and symbol, then attributes
+        const polygonGraphic = new Graphic({
+          geometry: polygon,
+          symbol: simplePolySymbol,
+          attributes: plygnattributes,
+          popupTemplate: popupTemplate
+        })
+
+        // create polylineGraphic, same method as above
+        const polylineGraphic = new Graphic({
+          geometry: polyline,
+          symbol: simpleLineSymbol,
+          attributes: lineattributes,
+          popupTemplate: popupTemplate
+        })
 
         // add point graphic to the map/graphicsLayer
         graphicsLayer.add(pointGraphic);
+        // add polygon and polyline graphics to the map
+        graphicsLayer.add(polygonGraphic);
+        graphicsLayer.add(polylineGraphic);
       });  
 
   </script>
