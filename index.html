@@ -173,10 +173,22 @@
         // add point graphic last so it renders on top of the polyline
         graphicsLayer.add(pointGraphic);
 
+        // Challenge 3: add feature layer, modify popup 
+        // Define a pop-up for usaeduLayer
+        const popupTouristAttractions = {
+          "title": "Tourist Attractions",
+          "content": "<b>Amenity:</b> {amenity}<br><b>Attraction:</b> {attraction}<br><b>Description:</b> {description}<br><b>Historic:</b> {historic}<br>"
+        }
+
         // add constructor for the feature layer
         const touristAttractionsLayer = new FeatureLayer({
-          url: "https://services-ap1.arcgis.com/iA7fZQOnjY9D67Zx/arcgis/rest/services/OSM_AS_Tourism/FeatureServer"
-        })
+          url: "https://services-ap1.arcgis.com/iA7fZQOnjY9D67Zx/arcgis/rest/services/OSM_AS_Tourism/FeatureServer",
+        
+          //add the popup here
+          outFields: ["amenity","attraction", "description", "historic"],
+          popupTemplate: popupTouristAttractions
+        });
+
         map.add(touristAttractionsLayer);
       });  
 
