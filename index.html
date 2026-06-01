@@ -36,9 +36,15 @@
         "esri/config", 
         "esri/Map", 
         "esri/views/MapView",
+        
+        // add modules for graphic and graphics layer
         "esri/Graphic",
-        "esri/layers/GraphicsLayer"
-      ], function(esriConfig, Map, MapView, Graphic, GraphicsLayer) {   
+        "esri/layers/GraphicsLayer",
+
+        // add module for feature layer
+        "esri/layers/FeatureLayer"
+
+      ], function(esriConfig, Map, MapView, Graphic, GraphicsLayer, FeatureLayer) {   
       
         // set API key and create map with basemap layer
         esriConfig.apiKey = "AAPTaZ2rQpZ3e_kAjLMbAoRHR0g.._fqqp4bDNHHZdzTSsp9AO-QkJHtKqpaj-7Xv25F1YGAftgihPfF0YtKx3TlgjV1fIfgz5d5KD1tO1WludBUUE8UK14qZyasG6wdcyVgej-0RvTJlT6Cqr8NSnHJs2CR-QKtZ6cx1a-DlDQQytvHfcbHYyH2--XMqzLkkWez9t3HIMhqczJVoVTeXmERX-Sc_6OCF9zTuUnAuesDvugrzl5GUAN3LGTz2Zteo1pZkcrVPu2RRO94cFDhn8pvWIVGFeUSd7-icAT1_FDhHahp4";
@@ -83,17 +89,17 @@
         const polygon = {
           type: "polygon",
           rings: [[ // approx coordinates of Hakodate Station
-            [140.7250, 41.7800], 
-            [140.7290, 41.7800], 
-            [140.7290, 41.7720],
-            [140.7250, 41.7720],
-            [140.7250, 41.7800]// closing the polygon with the starting point
+            [140.7250, 41.7820], 
+            [140.7290, 41.7820], 
+            [140.7290, 41.7750],
+            [140.7250, 41.7750],
+            [140.7250, 41.7820]// closing the polygon with the starting point
           ]]
         };
         // define style for polygon graphic
         const simplePolySymbol = {
           type: "simple-fill",
-          color: [255, 255, 255, 0.9], // added slight transparency so I can still see the basemap underneath
+          color: [255, 255, 255, 0.75], // added slight transparency so I can still see the basemap underneath
           outline: {
             color: [32, 144, 184],
             width: 1
@@ -104,7 +110,7 @@
         const polyline = {
           type: "polyline",
           paths: [
-            [140.726, 41.773], 
+            [140.7250, 41.7750], 
             [140.720, 41.768], 
             [140.715, 41.763], 
             [140.7042, 41.7589] 
@@ -166,6 +172,12 @@
         graphicsLayer.add(polylineGraphic);
         // add point graphic last so it renders on top of the polyline
         graphicsLayer.add(pointGraphic);
+
+        // add constructor for the feature layer
+        const touristAttractionsLayer = new FeatureLayer({
+          url: "https://services-ap1.arcgis.com/iA7fZQOnjY9D67Zx/arcgis/rest/services/OSM_AS_Tourism/FeatureServer"
+        })
+        map.add(touristAttractionsLayer);
       });  
 
   </script>
